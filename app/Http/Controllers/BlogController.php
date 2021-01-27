@@ -28,7 +28,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('blog.create', [
+        ]);
     }
 
     /**
@@ -39,7 +40,14 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+        $blog = new Blog;
+        $blog->name = $request->get('name');
+        $blog->save();
+
+        return redirect(route('blogs.list'));
     }
 
     /**
@@ -61,7 +69,9 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+        return view('blog.edit', [
+            'blog' => $blog
+        ]);
     }
 
     /**
@@ -73,7 +83,12 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+        $blog->name = $request->get('name');
+        $blog->save();
+        return redirect(route('blogs.list'));
     }
 
     /**
@@ -84,6 +99,8 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+        $blog->posts()->delete();
+        $blog->delete();
+        return redirect(route('blogs.list'));
     }
 }

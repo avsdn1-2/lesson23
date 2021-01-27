@@ -95,8 +95,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //var_dump($request);
-        //dd($post);
         $this->validate($request, [
             'title' => 'required|string',
             'content' => 'required|string'
@@ -106,21 +104,14 @@ class PostController extends Controller
 
         $post->title = $request->get('title');
         $post->content = $request->get('content');
-        $post->blog_id = $post->blog_id;
-
         $post->save();
-        //dd($post);
 
-        //$flight = App\Flight::where('active', 1)->first();
         $blog = \App\Models\Blog::find($post->blog_id);
-        //dd($blog);
 
         return redirect(route('blog_posts.list', ['blog' => $blog->id]));
-
-
     }
 
-    public function storeUpd(Request $request, Blog $blog,Post $post)
+    public function storeUpd(Request $request,Blog $blog,Post $post)
     {
         $this->validate($request, [
             'title' => 'required|string',
@@ -131,12 +122,7 @@ class PostController extends Controller
 
         $post->title = $request->get('title');
         $post->content = $request->get('content');
-        //$post->user_id = Auth::user()->id;
-        //$post->blog_id = $blog->id;
         $post->save();
-
-        //$post->blog()->associate($blog);
-        //$post->user()->associate(Auth::user());
 
         return redirect(route('blog_posts.list', ['blog' => $blog->id]));
     }
@@ -149,8 +135,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //dd($post);
-
         $blog = \App\Models\Blog::find($post->blog_id);
         $post->delete();
 
